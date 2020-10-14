@@ -42,6 +42,127 @@
           }
         }
       }
+    },
+    "cdk-demo": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/cdk-demo",
+      "sourceRoot": "projects/cdk-demo/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/cdk-demo",
+            "index": "projects/cdk-demo/src/index.html",
+            "main": "projects/cdk-demo/src/main.ts",
+            "polyfills": "projects/cdk-demo/src/polyfills.ts",
+            "tsConfig": "projects/cdk-demo/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/cdk-demo/src/favicon.ico",
+              "projects/cdk-demo/src/assets"
+            ],
+            "styles": [
+              "projects/cdk-demo/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/cdk-demo/src/environments/environment.ts",
+                  "with": "projects/cdk-demo/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "cdk-demo:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "cdk-demo:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "cdk-demo:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/cdk-demo/src/test.ts",
+            "polyfills": "projects/cdk-demo/src/polyfills.ts",
+            "tsConfig": "projects/cdk-demo/tsconfig.spec.json",
+            "karmaConfig": "projects/cdk-demo/karma.conf.js",
+            "assets": [
+              "projects/cdk-demo/src/favicon.ico",
+              "projects/cdk-demo/src/assets"
+            ],
+            "styles": [
+              "projects/cdk-demo/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/cdk-demo/tsconfig.app.json",
+              "projects/cdk-demo/tsconfig.spec.json",
+              "projects/cdk-demo/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/cdk-demo/e2e/protractor.conf.js",
+            "devServerTarget": "cdk-demo:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "cdk-demo:serve:production"
+            }
+          }
+        }
+      }
     }},
   "defaultProject": "forms"
 }
