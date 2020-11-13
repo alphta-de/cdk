@@ -3,5 +3,5 @@
   <label class="floating-label" [ngClass]="{'up': isLabelUp }">{{label}}</label>
   <figure #mainIconContainer></figure>
   <figure #errorIconContainer></figure>
-  <span class="top-info"><ng-container *ngFor="let msg of errorMessages"> {{msg}}</ng-container></span>
+  <span class="top-info"> <ng-container *ngIf="showHelpText"> {{helpText}} </ng-container> <ng-container *ngFor="let msg of errorMessages"> {{msg}}</ng-container></span>
 </div>

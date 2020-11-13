@@ -9,9 +9,11 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'app-form-field',
   templateUrl: './form-field.component.html',
   styleUrls: ['./form-field.component.scss'],
+  // tslint:disable-next-line:no-host-metadata-property
   host: {
     class: 'form-field',
     '[class.focused]': '_control.focused',
@@ -47,12 +49,13 @@ export class FormFieldComponent implements OnInit, AfterViewInit {
     this._modificatorClasses = classList.map((klass) => `input-box--${klass}`);
 
   }
-  get modificatorClasses() {
+  get modificatorClasses(): string[] {
     return this._modificatorClasses;
   }
+
   @Input()
   set whiteListErrorMsgs(data: string[]) {
-    if(data) {
+    if (data) {
       this._whiteListErrorMsgs = [...data];
     } else {
       this._whiteListErrorMsgs = [];
@@ -62,7 +65,11 @@ export class FormFieldComponent implements OnInit, AfterViewInit {
     return this._whiteListErrorMsgs;
   }
 
-  private _whiteListErrorMsgs: string[] = []
+  private _whiteListErrorMsgs: string[] = [];
+
+  get showHelpText(): boolean {
+    return this.errorMessages.length === 0 && this.helpText.length > 0;
+  }
 
   @ContentChild(PasswordVisibilitySwitchBase, {static: false})
   private passwordVisibilitySwitchControl: PasswordVisibilitySwitchBase;
@@ -71,6 +78,7 @@ export class FormFieldComponent implements OnInit, AfterViewInit {
   @Input() errorMessages: string[] = [];
   @Input() label: string;
   @Input() mainIconName: string;
+  @Input() helpText = '';
 
   @ViewChild('mainIconContainer', { read: ViewContainerRef, static: true })
   mainIconContainer: ViewContainerRef;
@@ -95,15 +103,15 @@ export class FormFieldComponent implements OnInit, AfterViewInit {
       try {
         this.svgIconsResolver.createIcon(this.mainIconName, this.mainIconContainer);
       } catch (e) {
-        console.warn(e.message)
+        console.warn(e.message);
       }
     }
 
-    if(this.withErrorIcon) {
+    if (this.withErrorIcon) {
       try {
         this.svgIconsResolver.createIcon('i-error', this.errorIconContainer);
       } catch (e) {
-        console.warn(e.message)
+        console.warn(e.message);
       }
     }
 
@@ -116,7 +124,7 @@ export class FormFieldComponent implements OnInit, AfterViewInit {
     if (this._control.ngControl) {
       this._control.ngControl.control.statusChanges
       .pipe(untilDestroyed(this))
-      .subscribe(this.generateErrorMsgs.bind(this))
+      .subscribe(this.generateErrorMsgs.bind(this));
     }
 
     if (this.passwordVisibilitySwitchControl) {
@@ -126,7 +134,6 @@ export class FormFieldComponent implements OnInit, AfterViewInit {
         this._controlStatic.type = visibility ? 'text' : 'password';
       });
     }
-
   }
 
   private generateErrorMsgs(): void {
