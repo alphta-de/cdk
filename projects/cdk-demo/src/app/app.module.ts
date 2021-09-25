@@ -1,8 +1,21 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { Injectable, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { FormFieldModule, ErrorMsgsExtractorService } from 'dist/forms';
+
+@Injectable({providedIn: 'root'})
+export class AppErrorMsgsExtractorService extends ErrorMsgsExtractorService {
+  constructor(
+  ) {
+    super();
+  }
+
+  extract(errorCode): string {
+    return errorCode;
+  }
+}
 
 @NgModule({
   declarations: [
@@ -10,7 +23,12 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormFieldModule.forRoot({
+      svgIconsMap: {},
+      errorMsgsExtractorServiceClass: AppErrorMsgsExtractorService
+    }),
+    FormFieldModule.forChild(),
   ],
   providers: [],
   bootstrap: [AppComponent]
